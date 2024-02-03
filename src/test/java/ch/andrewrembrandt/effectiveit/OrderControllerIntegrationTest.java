@@ -26,7 +26,6 @@ import org.springframework.web.reactive.function.BodyInserters;
 
 @SpringBootTest
 @AutoConfigureWebTestClient
-@Import(R2dbcIntegrationTestInitialiser.class)
 public class OrderControllerIntegrationTest {
 
   LocalDate watchDate = LocalDate.parse("2001-01-01");
@@ -51,7 +50,7 @@ public class OrderControllerIntegrationTest {
 
   @Test
   void allOrdersReturned() {
-    val from = ZonedDateTime.parse("2001-04-23T04:30:45+01:00");
+    val from = LocalDate.parse("2001-04-23");
     val to = from.plusYears(20);
     val results = getOrderResults(from, to);
 
@@ -60,7 +59,7 @@ public class OrderControllerIntegrationTest {
 
   @Test
   void ordersByDateAreFiltered() {
-    val fromFirst = ZonedDateTime.parse("2001-04-23T04:30:45+01:00");
+    val fromFirst = LocalDate.parse("2001-04-23");
     val toFirst = fromFirst.plusYears(11);
 
     val firstResults = getOrderResults(fromFirst, toFirst);
@@ -73,12 +72,12 @@ public class OrderControllerIntegrationTest {
 
   @Test
   void addOrder() {
-    val curTime = ZonedDateTime.now();
+    val now = LocalDate.now();
 
     val newOrder = new NewOrderDTO(list("A1214", "A1214"), "i@me.com");
     createOrder(newOrder).expectStatus().isOk();
 
-    var results = getOrderResults(curTime, curTime.plusMinutes(1));
+    var results = getOrderResults(now, now.plusDays(1));
     assertThat(results)
         .extracting("products", "buyerEmail", "total")
         .contains(
@@ -95,11 +94,11 @@ public class OrderControllerIntegrationTest {
     createOrder(newOrder).expectStatus().isBadRequest();
   }
 
-  private String datetimeToUriParam(ZonedDateTime dt) {
-    return dt.withZoneSameInstant(ZoneOffset.UTC).format(DateTimeFormatter.ISO_DATE_TIME);
+  private String datetimeToUriParam(LocalDate dt) {
+    return dt.format(DateTimeFormatter.ISO_DATE);
   }
 
-  private List<OrderDTO> getOrderResults(ZonedDateTime from, ZonedDateTime to) {
+  private List<OrderDTO> getOrderResults(LocalDate from, LocalDate to) {
     return client
         .get()
         .uri("/api/orders?from=" + datetimeToUriParam(from) + "&to=" + datetimeToUriParam(to))
