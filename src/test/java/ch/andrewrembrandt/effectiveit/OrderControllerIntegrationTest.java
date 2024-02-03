@@ -28,13 +28,6 @@ public class OrderControllerIntegrationTest {
   LocalDate watchDate = LocalDate.parse("2001-01-01");
   LocalDate tabletDate = LocalDate.parse("2001-01-02");
   ProductDTO watch = new ProductDTO("A1213", "Watch", new BigDecimal("30.50"), watchDate);
-  OrderDTO secondOrder =
-      new OrderDTO(
-          2001L,
-          list(watch),
-          "myself@me.com",
-          ZonedDateTime.parse("2015-01-01T09:00Z"),
-          new BigDecimal("30.50"));
   ProductDTO tablet = new ProductDTO("A1214", "Tablet", new BigDecimal("700.90"), tabletDate);
   OrderDTO firstOrder =
       new OrderDTO(
@@ -43,6 +36,14 @@ public class OrderControllerIntegrationTest {
           "me@me.com",
           ZonedDateTime.parse("2011-01-01T19:00Z"),
           new BigDecimal("761.90"));
+  OrderDTO secondOrder =
+      new OrderDTO(
+          2001L,
+          list(watch),
+          "myself@me.com",
+          ZonedDateTime.parse("2015-01-01T09:00Z"),
+          new BigDecimal("30.50"));
+
   @Autowired private WebTestClient client;
 
   @Test
