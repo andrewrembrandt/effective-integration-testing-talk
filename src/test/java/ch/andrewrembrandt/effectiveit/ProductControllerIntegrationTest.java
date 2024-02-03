@@ -37,7 +37,7 @@ public class ProductControllerIntegrationTest {
   void addProduct() {
     val products = getProducts();
 
-    val newProduct = new ProductDataDTO("Awesome", new BigDecimal("3000.1"), LocalDate.now());
+    val newProduct = new ProductDataDTO("Awesome", new BigDecimal("3000.10"), LocalDate.now());
     client
         .post()
         .uri("/api/products/B2000")
@@ -57,7 +57,7 @@ public class ProductControllerIntegrationTest {
     val existing = getProducts().stream().filter(p -> !p.getSku().equals("A1213"));
 
     val updatedProduct =
-        new ProductDataDTO("Neues Produkt", new BigDecimal("200.0"), LocalDate.now());
+        new ProductDataDTO("Neues Produkt", new BigDecimal("200.00"), LocalDate.now());
     client
         .put()
         .uri("/api/products/A1213")

@@ -43,11 +43,12 @@ public class ProductService {
     return Mono.deferContextual(ctx -> repo.findBySku(sku))
         .flatMap(
             existingProduct -> {
-              val newProduct = dataMapper.toProduct(dto);
-              newProduct.setId(existingProduct.getId());
-              newProduct.setSku(sku);
-              return repo.save(newProduct);
+              val updatedProduct = dataMapper.toProduct(dto);
+              updatedProduct.setId(existingProduct.getId());
+              updatedProduct.setSku(sku);
+              return repo.save(updatedProduct);
             })
+        .switchIfEmpty(Mono.error(new SkuNotFoundException(sku)))
         .then();
   }
 
