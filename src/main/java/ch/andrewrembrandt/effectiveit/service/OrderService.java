@@ -39,12 +39,9 @@ public class OrderService {
         .flatMap(na -> orderRepo.save(order))
         .flatMapMany(
             savedOrder ->
-
-                        Flux.fromIterable(dto.getProductSkus())
-                            .flatMap(
-                                sku ->
-                                    orderProductRepo.addProductForOrder(
-                                        savedOrder.getId(), sku)))
+                Flux.fromIterable(dto.getProductSkus())
+                    .flatMap(sku -> orderProductRepo.addProductForOrder(savedOrder.getId(), sku)))
+        .reduce(0, (acc, num) -> acc + num)
         .flatMap(
             numProductsAddedToOrder -> {
               if (numProductsAddedToOrder == dto.getProductSkus().size()) return Mono.empty();
