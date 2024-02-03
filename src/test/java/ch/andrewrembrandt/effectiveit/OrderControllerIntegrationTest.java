@@ -8,10 +8,8 @@ import static org.assertj.core.util.Lists.list;
 import ch.andrewrembrandt.effectiveit.dto.NewOrderDTO;
 import ch.andrewrembrandt.effectiveit.dto.OrderDTO;
 import ch.andrewrembrandt.effectiveit.dto.ProductDTO;
-import ch.andrewrembrandt.effectiveit.util.R2dbcIntegrationTestInitialiser;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -20,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 
@@ -30,22 +27,22 @@ public class OrderControllerIntegrationTest {
 
   LocalDate watchDate = LocalDate.parse("2001-01-01");
   LocalDate tabletDate = LocalDate.parse("2001-01-02");
-  ProductDTO watch = new ProductDTO("A1213", "Watch", new BigDecimal("30.5"), watchDate);
+  ProductDTO watch = new ProductDTO("A1213", "Watch", new BigDecimal("30.50"), watchDate);
   OrderDTO secondOrder =
       new OrderDTO(
           2001L,
           list(watch),
           "myself@me.com",
-          ZonedDateTime.parse("2015-01-01T09:00Z[UTC]"),
-          new BigDecimal("30.5"));
-  ProductDTO tablet = new ProductDTO("A1214", "Tablet", new BigDecimal("700.9"), tabletDate);
+          ZonedDateTime.parse("2015-01-01T09:00Z"),
+          new BigDecimal("30.50"));
+  ProductDTO tablet = new ProductDTO("A1214", "Tablet", new BigDecimal("700.90"), tabletDate);
   OrderDTO firstOrder =
       new OrderDTO(
           2000L,
           list(watch, watch, tablet),
           "me@me.com",
-          ZonedDateTime.parse("2011-01-01T19:00Z[UTC]"),
-          new BigDecimal("761.9"));
+          ZonedDateTime.parse("2011-01-01T19:00Z"),
+          new BigDecimal("761.90"));
   @Autowired private WebTestClient client;
 
   @Test

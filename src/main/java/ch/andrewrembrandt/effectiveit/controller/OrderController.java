@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,6 +31,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 @Tag(name = "Orders", description = "Orders Basic API")
 @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Successful operation")})
+@Slf4j
 public class OrderController {
 
   private final OrderService orderService;
@@ -41,6 +43,7 @@ public class OrderController {
   Flux<OrderDTO> getOrdersBetween(
       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
+    log.info("Getting orders between {} and {}", from, to);
     return orderService.getOrdersBetween(
         from.atStartOfDay(ZoneId.systemDefault()),
         to.plusDays(1).atStartOfDay(ZoneId.systemDefault()));

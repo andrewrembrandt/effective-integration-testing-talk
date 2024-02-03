@@ -28,7 +28,7 @@ public class OrderService {
     return Flux.deferContextual(
         ctx ->
             orderRepo
-                .findByPlacedTimeBetween(from, to)
+                .findByPlacedTimeBetweenOrderByPlacedTime(from, to)
                 .flatMap(retrieveProducts()));
   }
 

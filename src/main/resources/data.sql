@@ -1,6 +1,6 @@
 insert into product(id, sku, name, price, creation_date, deleted)
-values (1000, 'A1213', 'Watch', 30.50, date '2001-01-01', false),
-       (1001, 'A1214', 'Tablet', 700.90, date '2001-01-02', false)
+values (1000, 'A1213', 'Watch', 30.5, date '2001-01-01', false),
+       (1001, 'A1214', 'Tablet', 700.9, date '2001-01-02', false)
 on conflict do nothing;
 
 insert into customer_order(id, buyer_email, placed_time)
@@ -11,6 +11,6 @@ on conflict do nothing;
 insert into order_product(id, order_id, product_id)
 values (3000, 2000, 1000),
        (3001, 2000, 1000),
-       (3002, 2001, 1001),
-       (3003, 2001, 1001)
+       (3002, 2000, 1001),
+       (3003, 2001, 1000)
 on conflict do nothing;
