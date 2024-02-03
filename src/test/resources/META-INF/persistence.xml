@@ -7,7 +7,7 @@
         <provider>org.hibernate.reactive.provider.ReactivePersistenceProvider</provider>
 
         <class>ch.andrewrembrandt.effectiveit.model.Product</class>
-        <class>ch.andrewrembrandt.effectiveit.model.Order</class>
+        <class>ch.andrewrembrandt.effectiveit.model.CustomerOrder</class>
         <class>ch.andrewrembrandt.effectiveit.model.OrderProduct</class>
 
         <properties>

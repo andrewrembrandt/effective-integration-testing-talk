@@ -3,7 +3,7 @@ package ch.andrewrembrandt.effectiveit.service;
 import ch.andrewrembrandt.effectiveit.dto.NewOrderDTO;
 import ch.andrewrembrandt.effectiveit.dto.OrderDTO;
 import ch.andrewrembrandt.effectiveit.dto.ProductDTO;
-import ch.andrewrembrandt.effectiveit.model.Order;
+import ch.andrewrembrandt.effectiveit.model.CustomerOrder;
 import ch.andrewrembrandt.effectiveit.repository.OrderProductRepository;
 import ch.andrewrembrandt.effectiveit.repository.OrderRepository;
 import ch.andrewrembrandt.effectiveit.util.NoProductsException;
@@ -34,7 +34,7 @@ public class OrderService {
 
   public Mono<Void> createOrder(NewOrderDTO dto) {
     val checkedProducts = ensureProducts(dto);
-    val order = new Order(null, dto.getBuyerEmail(), ZonedDateTime.now());
+    val order = new CustomerOrder(null, dto.getBuyerEmail(), ZonedDateTime.now());
     return checkedProducts
         .flatMap(na -> orderRepo.save(order))
         .flatMapMany(
@@ -58,7 +58,7 @@ public class OrderService {
     else return Mono.just(false);
   }
 
-  private Function<Order, Publisher<? extends OrderDTO>> retrieveProducts() {
+  private Function<CustomerOrder, Publisher<? extends OrderDTO>> retrieveProducts() {
     return oe ->
         Mono.deferContextual(
             ctx ->

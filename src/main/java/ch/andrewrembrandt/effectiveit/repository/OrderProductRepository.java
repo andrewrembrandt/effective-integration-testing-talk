@@ -14,7 +14,7 @@ public interface OrderProductRepository extends R2dbcRepository<OrderProduct, Lo
 
   @Query(
       "select p.sku, p.name, p.price, p.creation_date from product p inner join order_product op on "
-          + "op.product_id = p.id and op.tenant_id = p.tenant_id where op.order_id = :order_id")
+          + "op.product_id = p.id where op.order_id = :order_id")
   Flux<ProductDTO> getProductsForOrder(Long orderId);
 
   @Modifying

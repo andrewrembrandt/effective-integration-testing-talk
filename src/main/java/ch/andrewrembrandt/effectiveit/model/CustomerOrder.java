@@ -3,7 +3,6 @@ package ch.andrewrembrandt.effectiveit.model;
 import java.time.ZonedDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
@@ -14,7 +13,7 @@ import org.springframework.data.annotation.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(callSuper = true)
-public class Order {
+public class CustomerOrder {
   @Id private Long id;
   private String buyerEmail;
   private ZonedDateTime placedTime;
