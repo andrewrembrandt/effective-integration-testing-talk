@@ -6,13 +6,11 @@ import ch.andrewrembrandt.effectiveit.dto.ProductDTO;
 import ch.andrewrembrandt.effectiveit.model.Order;
 import ch.andrewrembrandt.effectiveit.repository.OrderProductRepository;
 import ch.andrewrembrandt.effectiveit.repository.OrderRepository;
-import ch.andrewrembrandt.effectiveit.tenantaware.TenantContext;
 import ch.andrewrembrandt.effectiveit.util.NoProductsException;
 import ch.andrewrembrandt.effectiveit.util.SkuNotFoundException;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.function.Function;
-
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.reactivestreams.Publisher;
@@ -30,7 +28,7 @@ public class OrderService {
     return Flux.deferContextual(
         ctx ->
             orderRepo
-                .findByPlacedTimeBetweenAndTenantId(from, to, TenantContext.tenantId(ctx))
+                .findByPlacedTimeBetween(from, to)
                 .flatMap(retrieveProducts()));
   }
 
@@ -41,13 +39,12 @@ public class OrderService {
         .flatMap(na -> orderRepo.save(order))
         .flatMapMany(
             savedOrder ->
-                Flux.deferContextual(
-                    ctx ->
+
                         Flux.fromIterable(dto.getProductSkus())
                             .flatMap(
                                 sku ->
                                     orderProductRepo.addProductForOrder(
-                                        savedOrder.getId(), sku, TenantContext.tenantId(ctx)))))
+                                        savedOrder.getId(), sku)))
         .flatMap(
             numProductsAddedToOrder -> {
               if (numProductsAddedToOrder == dto.getProductSkus().size()) return Mono.empty();
@@ -66,7 +63,7 @@ public class OrderService {
         Mono.deferContextual(
             ctx ->
                 orderProductRepo
-                    .getProductsForOrder(oe.getId(), TenantContext.tenantId(ctx))
+                    .getProductsForOrder(oe.getId())
                     .collectList()
                     .map(
                         products ->

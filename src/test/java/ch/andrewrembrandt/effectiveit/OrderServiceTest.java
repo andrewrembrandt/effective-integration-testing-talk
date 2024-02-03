@@ -17,9 +17,8 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 @ExtendWith(SpringExtension.class)
-public class OrderServiceTest implements BaseTenantAwareTest {
-  @MockBean
-  OrderRepository orderRepo;
+public class OrderServiceTest {
+  @MockBean OrderRepository orderRepo;
 
   @MockBean OrderProductRepository orderProductRepo;
 
@@ -27,11 +26,11 @@ public class OrderServiceTest implements BaseTenantAwareTest {
   void addOrder() {
     val newOrderDto = new NewOrderDTO(list("A1213", "A1214"), "who@me.com");
     Mockito.when(orderRepo.save(any())).thenReturn(Mono.empty());
-    Mockito.when(orderProductRepo.addProductForOrder(any(), any(), any())).thenReturn(Mono.just(1));
+    Mockito.when(orderProductRepo.addProductForOrder(any(), any())).thenReturn(Mono.just(1));
 
     val orderService = new OrderService(orderRepo, orderProductRepo);
     val createMono = orderService.createOrder(newOrderDto);
-    StepVerifier.create(addTenant(createMono, 1l)).verifyComplete();
+    StepVerifier.create(createMono).verifyComplete();
 
     //    verify(orderRepo).save(eq(newOrderDto), any(ZonedDateTime.class));
     //    verify(orderProductRepo).addProductForOrder(any(), eq(newOrderDto.getProductSkus()));

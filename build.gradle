@@ -33,10 +33,11 @@ dependencies {
 
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'
     implementation 'org.projectlombok:lombok'
-    implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.6.15'
 
     implementation 'net.bytebuddy:byte-buddy:1.14.2'
     implementation 'org.reflections:reflections:0.10.2'
+
+    implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.3.0'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
@@ -78,14 +79,16 @@ task startPostgres(type: Exec) {
     commandLine './postgresql-start.sh'
 }
 
+task stopPostgres(type: Exec) {
+    commandLine('docker-compose', '-f', './resources/postgresql.yml', 'down')
+}
+
 bootRun.dependsOn startPostgres
 
 dependencyCheck {
     suppressionFile './resources/cve-suppression.xml'
 }
 
-compileJava {
-    options.compilerArgs += [
-//            '-Amapstruct.verbose=true'
-    ]
+tasks.withType(Test) {
+    jvmArgs("-XX:+EnableDynamicAgentLoading")
 }

@@ -8,5 +8,5 @@ import reactor.core.publisher.Flux;
 
 @Repository
 public interface OrderRepository extends R2dbcRepository<Order, Long> {
-  Flux<Order> findByPlacedTimeBetweenAndTenantId(ZonedDateTime from, ZonedDateTime to, Long tenantId);
+  Flux<Order> findByPlacedTimeBetween(ZonedDateTime from, ZonedDateTime to);
 }

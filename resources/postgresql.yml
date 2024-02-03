@@ -3,11 +3,11 @@ services:
   postgres:
     image: postgres:latest
     ports:
-      - "15432:5432"
+    - "15432:5432"
     container_name: it_postgres
     restart: "no"
     environment:
-      - POSTGRES_PASSWORD=RZ2Zv0qK-eDQvUW_Wzb2
+    - POSTGRES_PASSWORD=RZ2Zv0qK-eDQvUW_Wzb2
     volumes:
-      - "./postgres-data:/var/lib/postgresql/data:z"
-    user: "${userid}:${groupid}"
+    - "./postgres-data:/var/lib/postgresql/data:z"
+    user: "${UID}:${GID}"

@@ -8,6 +8,7 @@ import static org.assertj.core.util.Lists.list;
 import ch.andrewrembrandt.effectiveit.dto.NewOrderDTO;
 import ch.andrewrembrandt.effectiveit.dto.OrderDTO;
 import ch.andrewrembrandt.effectiveit.dto.ProductDTO;
+import ch.andrewrembrandt.effectiveit.util.R2dbcIntegrationTestInitialiser;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -19,11 +20,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 
 @SpringBootTest
 @AutoConfigureWebTestClient
+@Import(R2dbcIntegrationTestInitialiser.class)
 public class OrderControllerIntegrationTest {
 
   LocalDate watchDate = LocalDate.parse("2001-01-01");

@@ -14,10 +14,8 @@ import org.springframework.data.annotation.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
-public class Order extends TenantableEntity {
-  @Id
-  private Long id;
+public class Order {
+  @Id private Long id;
   private String buyerEmail;
   private ZonedDateTime placedTime;
 }

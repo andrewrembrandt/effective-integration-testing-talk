@@ -11,13 +11,11 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product extends TenantableEntity {
-  @Id
-  private Long id;
+public class Product {
+  @Id private Long id;
   private String sku;
   private String name;
   private BigDecimal price;

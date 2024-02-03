@@ -13,9 +13,7 @@ import org.springframework.data.annotation.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
-public class OrderProduct extends TenantableEntity {
-  @Id
-  private long id;
+public class OrderProduct {
+  @Id private long id;
   private long productId;
 }

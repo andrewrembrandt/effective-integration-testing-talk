@@ -5,11 +5,9 @@ import ch.andrewrembrandt.effectiveit.dto.ProductDataDTO;
 import ch.andrewrembrandt.effectiveit.mapper.ProductDataMapper;
 import ch.andrewrembrandt.effectiveit.mapper.ProductMapper;
 import ch.andrewrembrandt.effectiveit.repository.ProductRepository;
-import ch.andrewrembrandt.effectiveit.tenantaware.TenantContext;
 import ch.andrewrembrandt.effectiveit.util.SkuAlreadyExistsException;
 import ch.andrewrembrandt.effectiveit.util.SkuNotFoundException;
 import java.util.function.Function;
-
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.springframework.stereotype.Service;
@@ -25,13 +23,13 @@ public class ProductService {
 
   public Flux<ProductDTO> getAllActiveProducts() {
     return Flux.deferContextual(
-        ctx -> repo.findAllActiveProducts(TenantContext.tenantId(ctx)).map(mapper::toProductDto));
+        ctx -> repo.findAllActiveProducts().map(mapper::toProductDto));
   }
 
   public Mono<Void> deleteProduct(String sku) {
     return Mono.deferContextual(
         ctx ->
-            repo.softDeleteBySku(sku, TenantContext.tenantId(ctx))
+            repo.softDeleteBySku(sku)
                 .flatMap(ensureSingleUpdate(sku, false)));
   }
 
@@ -42,7 +40,7 @@ public class ProductService {
   }
 
   public Mono<Void> updateProduct(String sku, ProductDataDTO dto) {
-    return Mono.deferContextual(ctx -> repo.findBySku(sku, TenantContext.tenantId(ctx)))
+    return Mono.deferContextual(ctx -> repo.findBySku(sku))
         .flatMap(
             existingProduct -> {
               val newProduct = dataMapper.toProduct(dto);

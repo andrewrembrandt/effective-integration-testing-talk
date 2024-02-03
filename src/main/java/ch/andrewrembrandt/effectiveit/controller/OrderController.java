@@ -10,7 +10,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -38,9 +39,11 @@ public class OrderController {
       summary = "Orders within a date/time range",
       description = "Returns all between the from and to date/times (inclusive)")
   Flux<OrderDTO> getOrdersBetween(
-      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime from,
-      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime to) {
-    return orderService.getOrdersBetween(from, to);
+      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
+    return orderService.getOrdersBetween(
+        from.atStartOfDay(ZoneId.systemDefault()),
+        to.plusDays(1).atStartOfDay(ZoneId.systemDefault()));
   }
 
   @PostMapping

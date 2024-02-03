@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.andrewrembrandt.effectiveit.dto.ProductDataDTO;
 import ch.andrewrembrandt.effectiveit.repository.ProductRepository;
 import ch.andrewrembrandt.effectiveit.service.ProductService;
+import ch.andrewrembrandt.effectiveit.util.R2dbcIntegrationTestInitialiser;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import lombok.val;
@@ -16,8 +17,7 @@ import reactor.test.StepVerifier;
 
 @SpringBootTest
 @Import(R2dbcIntegrationTestInitialiser.class)
-public class ProductServiceIntegrationTest extends R2dbcIntegrationTestInitialiser
-    implements BaseTenantAwareTest {
+public class ProductServiceIntegrationTest extends R2dbcIntegrationTestInitialiser {
   @Autowired ProductRepository productRepo;
   @Autowired ProductService productService;
 
@@ -26,8 +26,8 @@ public class ProductServiceIntegrationTest extends R2dbcIntegrationTestInitialis
     val newProduct = new ProductDataDTO("Gipfeli", new BigDecimal("200.5"), LocalDate.now());
 
     StepVerifier.create(
-            addTenant(productService.createProduct("C1", newProduct), 1l)
-                .then(productRepo.findAllActiveProducts(1).collectList()))
+            productService.createProduct("C1", newProduct)
+                .then(productRepo.findAllActiveProducts().collectList()))
         .consumeNextWith(p -> assertThat(p).isNotEmpty())
         .verifyComplete();
   }

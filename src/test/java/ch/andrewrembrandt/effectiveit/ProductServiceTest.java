@@ -25,21 +25,18 @@ import reactor.test.StepVerifier;
 @ExtendWith(SpringExtension.class)
 @Import({ProductService.class, ProductMapperImpl.class, ProductDataMapperImpl.class})
 public class ProductServiceTest {
-  @MockBean
-  ProductRepository productRepo;
-  @Autowired
-  ProductService productService;
-  @Autowired
-  ProductDataMapper productDataMapper;
+  @MockBean ProductRepository productRepo;
+  @Autowired ProductService productService;
+  @Autowired ProductDataMapper productDataMapper;
 
   @Test
   void addProduct() {
     val newProduct = new Product(null, "C1", "Gipfeli", new BigDecimal("200.5"), null, null);
 
-    Mockito.when(productRepo.save(any()))
-        .thenReturn(Mono.empty());
+    Mockito.when(productRepo.save(any())).thenReturn(Mono.empty());
 
-    val createMono = productService.createProduct("C1", productDataMapper.toProductDataDto(newProduct));
+    val createMono =
+        productService.createProduct("C1", productDataMapper.toProductDataDto(newProduct));
     StepVerifier.create(createMono).verifyComplete();
 
     verify(productRepo).save(eq(newProduct));
