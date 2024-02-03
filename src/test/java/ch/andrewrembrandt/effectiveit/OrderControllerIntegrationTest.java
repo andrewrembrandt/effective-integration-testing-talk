@@ -21,7 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 
-@SpringBootTest
+@SpringBootTest()
 @AutoConfigureWebTestClient
 public class OrderControllerIntegrationTest {
 

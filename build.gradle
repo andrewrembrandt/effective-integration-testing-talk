@@ -90,5 +90,5 @@ dependencyCheck {
 }
 
 tasks.withType(Test) {
-    jvmArgs("-XX:+EnableDynamicAgentLoading")
+    jvmArgs('-XX:+EnableDynamicAgentLoading', '--add-opens', 'java.base/jdk.internal.loader=ALL-UNNAMED')
 }

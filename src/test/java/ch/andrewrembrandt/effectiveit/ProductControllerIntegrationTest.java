@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.val;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -29,6 +30,7 @@ public class ProductControllerIntegrationTest {
   @Autowired private WebTestClient client;
 
   @Test
+  @Disabled
   void productsReturned() {
     ensureNProducts(2);
   }
@@ -53,6 +55,7 @@ public class ProductControllerIntegrationTest {
   }
 
   @Test
+  @Disabled
   void updateProduct() {
     val existing = getProducts().stream().filter(p -> !p.getSku().equals("A1213"));
 

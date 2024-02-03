@@ -5,7 +5,7 @@ create table if not exists product
     name          varchar(400)       not null,
     price         decimal(10, 2)     not null,
     creation_date date               not null,
-    deleted       boolean            not null default (false)
+    deleted       boolean            default (false)
 );
 
 create index if not exists idx_product_sku on product (sku);

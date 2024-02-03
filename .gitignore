@@ -24,3 +24,7 @@ gradle-app.setting
 .classpath
 
 /resources/postgres-data/
+
+.settings/
+
+.factorypath

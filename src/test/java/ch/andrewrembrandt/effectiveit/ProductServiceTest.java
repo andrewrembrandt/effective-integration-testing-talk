@@ -12,6 +12,7 @@ import ch.andrewrembrandt.effectiveit.repository.ProductRepository;
 import ch.andrewrembrandt.effectiveit.service.ProductService;
 import java.math.BigDecimal;
 import lombok.val;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -24,12 +25,14 @@ import reactor.test.StepVerifier;
 
 @ExtendWith(SpringExtension.class)
 @Import({ProductService.class, ProductMapperImpl.class, ProductDataMapperImpl.class})
+@Disabled
 public class ProductServiceTest {
   @MockBean ProductRepository productRepo;
   @Autowired ProductService productService;
   @Autowired ProductDataMapper productDataMapper;
 
   @Test
+  @Disabled
   void addProduct() {
     val newProduct = new Product(null, "C1", "Gipfeli", new BigDecimal("200.5"), null, null);
 

@@ -22,21 +22,21 @@ public class ProductService {
   private final ProductMapper mapper;
 
   public Flux<ProductDTO> getAllActiveProducts() {
-    return Flux.deferContextual(
-        ctx -> repo.findAllActiveProducts().map(mapper::toProductDto));
+    return Flux.deferContextual(ctx -> repo.findAllActiveProducts().map(mapper::toProductDto));
   }
 
   public Mono<Void> deleteProduct(String sku) {
     return Mono.deferContextual(
-        ctx ->
-            repo.softDeleteBySku(sku)
-                .flatMap(ensureSingleUpdate(sku, false)));
+        ctx -> repo.softDeleteBySku(sku).flatMap(ensureSingleUpdate(sku, false)));
   }
 
   public Mono<Void> createProduct(String sku, ProductDataDTO dto) {
     val newProduct = dataMapper.toProduct(dto);
     newProduct.setSku(sku);
-    return repo.save(newProduct).then();
+    return repo.findBySku(sku)
+        .flatMap(existingProduct -> Mono.error(new SkuAlreadyExistsException(sku)))
+        .switchIfEmpty(repo.save(newProduct))
+        .then();
   }
 
   public Mono<Void> updateProduct(String sku, ProductDataDTO dto) {
