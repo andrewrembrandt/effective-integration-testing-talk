@@ -86,6 +86,6 @@ dependencyCheck {
 
 compileJava {
     options.compilerArgs += [
-            '-Amapstruct.verbose=true'
+//            '-Amapstruct.verbose=true'
     ]
 }

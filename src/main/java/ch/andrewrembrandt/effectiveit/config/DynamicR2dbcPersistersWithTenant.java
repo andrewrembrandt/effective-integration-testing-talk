@@ -65,7 +65,7 @@ public class DynamicR2dbcPersistersWithTenant implements BeanFactoryPostProcesso
   }
 
   private Set<Class<? extends TenantableEntity>> tenantableEntities() {
-    val reflections = new Reflections("ch.aaap.r2dbcpoc");
+    val reflections = new Reflections("ch.andrewrembrandt.effectiveit");
     return reflections.getSubTypesOf(TenantableEntity.class);
   }
 }
